@@ -322,6 +322,7 @@
   <div id="gitment-ctn"></div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="https://blueimp.github.io/JavaScript-MD5/js/md5.js"></script>
 <script>
 var gitalk = new Gitalk({
   owner: 'zhangxiaoshang',
@@ -329,7 +330,8 @@ var gitalk = new Gitalk({
   admin: 'zhangxiaoshang',
   clientID: '00efef364655aa905c81',
   clientSecret: '06e99769def8207c5f88208a6f41192f22aedbb3',
-  distractionFreeMode: false
+  distractionFreeMode: false,
+  id: md5(location.href)
 })
 gitalk.render('gitment-ctn')
 </script>
