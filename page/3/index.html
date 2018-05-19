@@ -6,11 +6,11 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaoshang.online">
-  <title>Archives: 2017/9 | 张小上的博客</title>
+  <title>张小上的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="张小上的博客">
-<meta property="og:url" content="http://xiaoshang.online/archives/2017/09/index.html">
+<meta property="og:url" content="http://xiaoshang.online/page/3/index.html">
 <meta property="og:site_name" content="张小上的博客">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
@@ -146,51 +146,106 @@
           <div id="js-content" class="content-ll">
             
   
-  
+    <article id="post-hello hexo again" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/02/Mac更换homebrew软件源/" class="archive-article-date">
-  	<time datetime="2017-09-02T15:13:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-02 23:13:24</time>
-</a>
-
-        </div>
-    	 
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/02/Mac更换homebrew软件源/">Mac OS 更换Homebrew软件镜像源</a>
+      <a class="article-title" href="/2017/03/01/hello hexo again/">Hello Hexo Again</a>
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2017/03/01/hello hexo again/" class="archive-article-date">
+  	<time datetime="2017-03-01T01:37:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-01 09:37:12</time>
+</a>
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>是不是很有极客范儿, 我喜欢这个博客!</p>
+</blockquote>
+<h3 id="hexo搭建笔记"><a href="#hexo搭建笔记" class="headerlink" title="hexo搭建笔记"></a>hexo搭建笔记</h3><ol>
+<li>安装hexo。</li>
+<li>拷贝_config.yml文件，这是hexo的配置文件，保存了博客首页设置、git部署路径等配置。</li>
+<li>拷贝themes文件夹下的themes/cactus-dark文件夹替换原有主题。</li>
+</ol>
+<pre><code>至此，hexo重新搭建完成，且主题、配置等和原有设置一致！
+如果使用：hexo deploy 命令时出错：ERROR Deployer not found: git
+解决办法：npm install hexo-deployer-git --save
+</code></pre><h3 id="2017-04-16-增加浏览量统计"><a href="#2017-04-16-增加浏览量统计" class="headerlink" title="2017-04-16 增加浏览量统计"></a>2017-04-16 增加浏览量统计</h3><p>1.引入<strong>卜蒜子</strong></p>
+<pre><code>&lt;script async src=&quot;//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js&quot;&gt;&lt;/script&gt;
+</code></pre><p>这段代码可以写在footer.ejs、header.ejs、layout.ejs, 我写在了footer.ejs文件里。</p>
+<pre><code>.../themes/(myThemes)/layout/_partial/footer.ejs
+</code></pre><p>2.增加站点访问量</p>
+<p>修改文件</p>
+<pre><code>.../themes/(myThemes)/layout/_partial/footer.ejs
+</code></pre><p>添加代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"busuanzi_container_site_uv"</span>&gt;</span> </span><br><span class="line">  本站访客数<span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"busuanzi_value_site_uv"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>人次</span><br><span class="line"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>计算访问量的方法有两种：</p>
+<ol>
+<li>算法a：pv的方式，单个用户连续点击n篇文章，记录n次访问量。</li>
+<li>算法b：uv的方式，单个用户连续点击n篇文章，只记录1次访客数。<br>我用的是uv的方式，自行选择即可。</li>
+</ol>
+<p>3.添加文章访问量</p>
+<p>修改文件</p>
+<pre><code>.../themes/(myThemes)/layout/_partial/post/date.ejs
+</code></pre><p>添加代码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"busuanzi_container_page_pv"</span>&gt;</span></span><br><span class="line">	浏览 <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"busuanzi_value_page_pv"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2017-06-03-重新搭建博客总结"><a href="#2017-06-03-重新搭建博客总结" class="headerlink" title="2017-06-03 重新搭建博客总结"></a>2017-06-03 重新搭建博客总结</h3><ol>
+<li><p>安装hexo</p>
+<ol>
+<li><code>$ npm install -g hexo-cli</code></li>
+<li><code>$ hexo init &lt;folder&gt;</code></li>
+<li><code>$ cd &lt;folder&gt;</code></li>
+<li><code>$ npm install</code></li>
+</ol>
+</li>
+<li><p>使用原始文件/夹替换搭建hexo生成的初始文件/夹，包括：</p>
+<ol>
+<li>scaffolds (模板)</li>
+<li>source (文章原始数据，重要！)</li>
+<li>themes (主题)</li>
+<li>_config.yml (配置)</li>
+</ol>
+</li>
+<li><p><code>$ npm install hexo-deployer-git --save</code> （执行这条命令，否则使用 <code>hexo deploy</code>部署时会报错.）</p>
+</li>
+</ol>
+<h3 id="2018-01-17-新主题增加GitCommnet评论系统"><a href="#2018-01-17-新主题增加GitCommnet评论系统" class="headerlink" title="2018-01-17 新主题增加GitCommnet评论系统"></a>2018-01-17 新主题增加GitCommnet评论系统</h3><ol>
+<li>themes/yilia/_config.yml 配置相应参数即可</li>
+</ol>
+<h3 id="2018-04-17-重新搭建博客简单方式"><a href="#2018-04-17-重新搭建博客简单方式" class="headerlink" title="2018-04-17 重新搭建博客简单方式"></a>2018-04-17 重新搭建博客简单方式</h3><p>1.克隆hexo项目<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:zhangxiaoshang/BlogBackup.git Blog</span><br></pre></td></tr></table></figure></p>
+<p>2.安装依赖</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install</span><br></pre></td></tr></table></figure>
+<p>3.克隆主题<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> Blog</span><br><span class="line">mkdir themes &amp;&amp; <span class="built_in">cd</span> themes</span><br><span class="line">git <span class="built_in">clone</span> git@github.com:zhangxiaoshang/hexo-theme-yilia.git yilia</span><br></pre></td></tr></table></figure></p>
+<p>4.完成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Mac</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -203,17 +258,43 @@
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/03/01/hello hexo again/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-  
-    </div></section>
-  
 
-    
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
+  
 
 
           </div>
@@ -235,9 +316,9 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
+		isHome: true,
 		isPost: false,
-		isArchive: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
