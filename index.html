@@ -146,6 +146,197 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-如何在Ubuntu-18-04上安装Nginx（译文）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/28/如何在Ubuntu-18-04上安装Nginx（译文）/">如何在Ubuntu 18.04上安装Nginx（译文）</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/28/如何在Ubuntu-18-04上安装Nginx（译文）/" class="archive-article-date">
+  	<time datetime="2018-06-28T15:16:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-28 23:16:44</time>
+</a>
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>阅读原文 <a href="https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04#" target="_blank" rel="noopener">How To Install Nginx on Ubuntu 18.04</a></p>
+<p>本教程以前的版本由 <a href="https://www.digitalocean.com/community/users/jellingwood" target="_blank" rel="noopener">Justin Ellingwood</a>编写</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Nginx是世界上最流行的web服务器之一，它负责托管互联网上一些大型、高流量的站点。它比Apache更加资源友好，在多数情况下可以作为web服务器或者反向代理。</p>
+<p>在该指南中，我们将讨论如何在你的Ubuntu 18.04服务器上安装Nginx</p>
+<h2 id="预备条件"><a href="#预备条件" class="headerlink" title="预备条件"></a>预备条件</h2><p>在开始本指南前，你应该为你的服务器配置普通的、拥有sudo权限的非root用户。你可以通过我们的<a href="https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04" target="_blank" rel="noopener">initial server setup guide for Ubuntu 18.04</a>学习如何配置普通用户账户.</p>
+<p>当你拥有可用的用户时，请以你的非root用户身份登录以开始。</p>
+<h2 id="第一步-安装Nginx"><a href="#第一步-安装Nginx" class="headerlink" title="第一步-安装Nginx"></a>第一步-安装Nginx</h2><p>因为Nginx在Ubuntu默认仓库中是可用的，所以可以使用<code>apt</code>从这些仓库中安装它。</p>
+<p>因为这是我们在这次会话中与apt的首次交互，我们将更新我们本地的包索引，以至于我们我们能够访问最新的软件包列表。之后我们就可以安装nginx:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install nginx</span><br></pre></td></tr></table></figure>
+<p>在接收该过程之后，apt会将Nginx和任何所需要的依赖安装到你的服务器上。</p>
+<h2 id="第二步-调整防火墙"><a href="#第二步-调整防火墙" class="headerlink" title="第二步-调整防火墙"></a>第二步-调整防火墙</h2><p>开始测试Nginx之前，防火墙需要做一些调整已允许访问这个服务。Nginx在安装时将自己注册为<code>ufw</code>服务，使它允许被Nginx直接访问。</p>
+<p>通过键入如下，ufw会列出应用程序配置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw app list</span><br></pre></td></tr></table></figure></p>
+<p>你应该会获得一份应用程序配置文件列表：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Output</span></span><br><span class="line">Available applications:</span><br><span class="line">  Nginx Full</span><br><span class="line">  Nginx HTTP</span><br><span class="line">  Nginx HTTPS</span><br><span class="line">  OpenSSH</span><br></pre></td></tr></table></figure></p>
+<p>如你所见，这有三个Nginx的可用配置文件：</p>
+<ul>
+<li>Nginx Full: 此配置文件打开端口80（常规，未加密的web流量）和端口443（TLS/SSL加密流量）</li>
+<li>Nginx HTTP: 这个配置文件只打开端口80（常规，未加密的web流量）</li>
+<li>Nginx HTTPS: 这个配置文件只打开端口443（TLS/SSL加密流量）</li>
+</ul>
+<p>建议启用最严格的配置文件，该配置文件仍允许你已经配置的流量。因为在本指南中我们尚未在我们的服务器上配置SSL，所以我们只需允许在80端口上的流量。</p>
+<p>你可以键入如下启用：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw allow <span class="string">'Nginx HTTP'</span></span><br></pre></td></tr></table></figure></p>
+<p>你可以像这样验证变化：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw status</span><br></pre></td></tr></table></figure></p>
+<p>你可以在输出信息中看到HTTP流量已经被允许了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Output</span></span><br><span class="line">Status: active</span><br><span class="line"></span><br><span class="line">To                         Action      From</span><br><span class="line">--                         ------      ----</span><br><span class="line">OpenSSH                    ALLOW       Anywhere                  </span><br><span class="line">Nginx HTTP                 ALLOW       Anywhere                  </span><br><span class="line">OpenSSH (v6)               ALLOW       Anywhere (v6)             </span><br><span class="line">Nginx HTTP (v6)            ALLOW       Anywhere (v6)</span><br></pre></td></tr></table></figure>
+<h2 id="第三步-检测你的Web服务器"><a href="#第三步-检测你的Web服务器" class="headerlink" title="第三步-检测你的Web服务器"></a>第三步-检测你的Web服务器</h2><p>在安装过程结束后，Ubuntu 18.04开启了Nginx。这个Web服务器应该已经启动并运行了。</p>
+<p>我们可以通过<code>systemd</code>检查以确保服务正在运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Output</span></span><br><span class="line">nginx.service - A high performance web server and a reverse proxy server</span><br><span class="line">   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)</span><br><span class="line">   Active: active (running) since Fri 2018-04-20 16:08:19 UTC; 3 days ago</span><br><span class="line">     Docs: man:nginx(8)</span><br><span class="line"> Main PID: 2369 (nginx)</span><br><span class="line">    Tasks: 2 (<span class="built_in">limit</span>: 1153)</span><br><span class="line">   CGroup: /system.slice/nginx.service</span><br><span class="line">           ├─2369 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;</span><br><span class="line">           └─2380 nginx: worker process</span><br></pre></td></tr></table></figure>
+<p>如你在上面所见，这个服务好像已经成功启动。但是，最好的验证方式是从Nginx上实际请求一个页面。</p>
+<p>通过在浏览器中访问你服务器的IP地址，你可以访问到一个Nginx的默认页面以确定Nginx软件在正确运行。如果你不知道自己服务器的IP地址，你有以下几种不同的方式查看：</p>
+<p>尝试在你服务器的终端中键入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip addr show eth0 | grep inet | awk <span class="string">'&#123; print $2; &#125;'</span> | sed <span class="string">'s/\/.*$//'</span></span><br></pre></td></tr></table></figure>
+<p>你可以得到几行反馈，你可以在浏览器中依次尝试，观察它们是否可以工作。</p>
+<p>另一种方法是键入下面信息，它将向你提供你的公开IP地址，可以在互联网上的其他地方访问的地址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -4 icanhazip.com</span><br></pre></td></tr></table></figure>
+<p>当你获取了服务器IP地址，在你的浏览器地址栏中访问：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://your_server_ip</span><br></pre></td></tr></table></figure>
+<p>你会看到默认的Nginx页面：</p>
+<p><img src="https://assets.digitalocean.com/articles/nginx_1604/default_page.png" alt="Welcome to nginx!"></p>
+<p>这是Nginx附带的页面，用于向你展示服务器在正确运行。</p>
+<h2 id="第四步-管理Nginx进程"><a href="#第四步-管理Nginx进程" class="headerlink" title="第四步-管理Nginx进程"></a>第四步-管理Nginx进程</h2><p>现在你的web服务器已启动并正在运行，让我们回顾一些基础的管理命令。</p>
+<p>停止web服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop nginx</span><br></pre></td></tr></table></figure>
+<p>当服务器停止的时候启动web服务器:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start nginx</span><br></pre></td></tr></table></figure>
+<p>重启web服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<p>如果只是简单的进行配置修改，Nginx通常可以重新加载而不会丢失连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo stystemctl reload nginx</span><br></pre></td></tr></table></figure>
+<p>Nginx的默认配置是，当服务器启动时Nginx会自动启动，如果这不是你想要的，你可以禁用这一行为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">disable</span> nginx</span><br></pre></td></tr></table></figure>
+<p>想要重新启用这一服务时（译注：和上一步相对）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl <span class="built_in">enable</span> nginx</span><br></pre></td></tr></table></figure>
+<h2 id="第五步-设置服务器模块"><a href="#第五步-设置服务器模块" class="headerlink" title="第五步-设置服务器模块"></a>第五步-设置服务器模块</h2><p>在使用Nginx web服务器时，可以使用服务器模块封装配置详细信息并在单个服务器上托管多个域。我们将建立一个名为<code>example.com</code>的域名，但是你应该替换成自己的域名。在DigitalOcean了解更多关于配置域名的信息，可以看我们的<a href="https://www.digitalocean.com/docs/networking/dns/" target="_blank" rel="noopener">Introduction to DigitalOcean DNS</a>.</p>
+<p>Ubuntu 18.04上的Nginx默认启用了一个服务器模块，该服务器模块配置的服务文件路径为<code>/var/www/html</code>. 这适用于单个站点，如果托管多个站点可能会变得难以处理。我们不必修改 <code>/var/www/html</code>, 而是在 <code>/var/www</code> 中为我们的 <code>example.com</code> 网站创建一个目录结构，并将 <code>/var/www/html</code> 保留为默认目录，如果客户端请求没有匹配任何其他网站。</p>
+<p>为 <code>example.com</code> 创建目录，使用 <code>-p</code> 标志，可以创建必要的父目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /var/www/example.com/html</span><br></pre></td></tr></table></figure>
+<p>下一步，使用 <code>$USER</code> 环境变量分配目录的所有者权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R <span class="variable">$USER</span>:<span class="variable">$USER</span> /var/www/example.com/html</span><br></pre></td></tr></table></figure>
+<p>如果你没有修改你的 <code>umask(译注：说的是掩码吧)</code> 值，你web根目录的权限应该是正确的，你可以这样确保：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod -R 755 /var/www/example.com</span><br></pre></td></tr></table></figure>
+<p>下一步，使用 <code>nano</code> 或者其他你喜欢的编辑器创建一个简单的 <code>index.html</code> 页面:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nano /var/www/example.com/html/index.html</span><br></pre></td></tr></table></figure>
+<p>添加一些简单的HTML：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Welcome to Example.com!<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Success!  The example.com server block is working!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>完成之后保存并关闭这个文件。</p>
+<p>为了让Nginx能够提供这些内容，创建一个有正确指令的服务器模块是必要的。我们不必修改默认的配置文件，而是在 <code>/etc/nginx/sites-available/example.com</code> 上创建一个新的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/nginx/sites-available/example.com</span><br></pre></td></tr></table></figure>
+<p>粘贴以下内容到配置块中，这些信息类似于默认值，但已更新为我们但新目录和域名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        listen [::]:80;</span><br><span class="line"></span><br><span class="line">        root /var/www/example.com/html;</span><br><span class="line">        index index.html index.htm index.nginx-debian.html;</span><br><span class="line"></span><br><span class="line">        server_name example.com www.example.com;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">                try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ =404;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请注意，我们已经将根目录更新到我们的新目录，并将 <code>server_name</code> 更新为我们的域名。</p>
+<p>接下来，让我们创建一个链接到 <code>sites-enabled</code> 目录，该目录是Nginx在启动过程中读取的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/</span><br></pre></td></tr></table></figure>
+<p>现在配置并启用了两个服务器模块，以基于它们的 <code>listen</code> 和 <code>server_name</code> 指令响应请求（你可以在<a href="https://www.digitalocean.com/community/tutorials/understanding-nginx-server-and-location-block-selection-algorithms" target="_blank" rel="noopener">这里</a>了解更多关于Nginx如何处理这些指令）</p>
+<ul>
+<li>example.com: 将响应请求 <code>example.com</code> 和 <code>www.example.com</code>.</li>
+<li>default: 将响应端口80上任何与其他两个块不匹配的请求.</li>
+</ul>
+<p>为了避免添加额外的 server names 可能出现的 hash bucket memory 问题，有必要调整 <code>/etc/nginx/nginx.conf</code>文件中的单个值。打开文件:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>找到 <code>server_names_hash_bucket_size</code> 指令，删除 <code>#</code> 符号以取消对该行的注释:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">http &#123;</span><br><span class="line">    ...</span><br><span class="line">    server_names_hash_bucket_size 64;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>接着，测试以确认在你的Nginx文件中没有语法错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx -t</span><br></pre></td></tr></table></figure>
+<p>完成之后保存并关闭文件。</p>
+<p>如果没有任何问题，重启Nginx以启用更改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<p>Nginx现在应该为你的域名提供服务，你可以通过导航至 <code>http://example.com</code> 测试这一点，然后你应该看到类似这样的内容：</p>
+<p><img src="https://assets.digitalocean.com/articles/nginx_server_block_1404/first_block.png" alt="example.com"></p>
+<h2 id="第六步-熟悉重要的Nginx文件和目录"><a href="#第六步-熟悉重要的Nginx文件和目录" class="headerlink" title="第六步-熟悉重要的Nginx文件和目录"></a>第六步-熟悉重要的Nginx文件和目录</h2><p>既然你已经知道如何管理Nginx本身，你应该花几分钟时间熟悉一些重要的目录和文件。</p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><ul>
+<li><code>/var/www/html</code>: 默认情况下，实际的网页内容仅包含你之前看到的默认Nginx页面，它在 <code>/var/www/html</code> 目录中提供，这可以通过修改Nginx配置文件来改变。</li>
+</ul>
+<h3 id="服务器配置"><a href="#服务器配置" class="headerlink" title="服务器配置"></a>服务器配置</h3><ul>
+<li><code>/etc/nginx</code>: Nginx配置目录。所有Nginx配置文件都在这里。</li>
+<li><code>/etc/nginx/nginx.conf</code>: Nginx主配置文件。这个可以修改，以更改Nginx全局配置。</li>
+<li><code>/etc/nginx/sites-availabel/</code>: 存储每个站点服务器块的目录。除非配置文件被链接到 <code>sites-enabled</code> 目录，否则Nginx不会使用此目录中的配置文件。通常，所有服务器块配置都在此目录中完成，然后通过链接到其他目录启用。</li>
+<li><code>/etc/nginx/sites-enabled/</code>: 启用的每个站点服务器模块目录。通常，它们是 <code>sites-available</code> 目录下文件的链接。</li>
+<li><code>/etc/nginx/snippets</code>: 该目录包含可以包含在其他任何Nginx配置中的配置片段。可重复的配置片段最好重构成配置片段。</li>
+</ul>
+<h3 id="服务器日志"><a href="#服务器日志" class="headerlink" title="服务器日志"></a>服务器日志</h3><ul>
+<li><code>/var/log/nginx/access.log</code>: 除非Nginx配置为其他方式，否则每个对Web服务器的请求都会记录在这个日志文件中。</li>
+<li><code>/var/log/nginx/error.log</code>: 任何Nginx错误都会被记录在这个日志中。</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>现在你安装了你的web服务器，你有不同类型的服务内容供选择，还可以使用你想用的技术创建丰富的体验。</p>
+<p>如果你像建立一个更完整的应用程序栈，可以查看这篇文章<a href="https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-in-ubuntu-16-04" target="_blank" rel="noopener">how to configure a LEMP stack on Ubuntu 16.04</a>.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Nginx</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/note//" class="article-tag-list-link color5">note</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/28/如何在Ubuntu-18-04上安装Nginx（译文）/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-《响应式Web设计HTML5和CSS3实战（第2版）》读书笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1089,114 +1280,6 @@
 
 
   
-    <article id="post-2018年flag" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/03/2018年flag/">2018年flag</a>
-    </h1>
-  
-
-        
-        <a href="/2018/01/03/2018年flag/" class="archive-article-date">
-  	<time datetime="2018-01-03T02:22:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-03 10:22:31</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="HTML5"><a href="#HTML5" class="headerlink" title="HTML5"></a>HTML5</h2><ul>
-<li style="list-style: none"><input type="checkbox" checked> 语义化H5标签 特别注意article、header、footer、aside、nav等，注意HTML的标题结构<ul>
-<li>完成方式：<a href="http://xiaoshang.online/2018/05/19/%E3%80%8A%E5%93%8D%E5%BA%94%E5%BC%8FWeb%E8%AE%BE%E8%AE%A1HTML5%E5%92%8CCSS3%E5%AE%9E%E6%88%98%EF%BC%88%E7%AC%AC2%E7%89%88%EF%BC%89%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">阅读《响应式Web设计 HTML5和CSS3实战（第2版）</a></li>
-</ul>
-</li>
-<li style="list-style: none"><input type="checkbox"> 理解HTML标签在各个浏览器上的默认样式（代理样式），理解CSS中的重置样式表的概念</li>
-<li style="list-style: none"><input type="checkbox"> 理解Canvas、SVG 设计一个动画并使用Canvas实现</li>
-<li style="list-style: none"><input type="checkbox"> 阅读书籍 《HTML5秘籍》</li>
-</ul>
-<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><ul>
-<li style="list-style: none"><input type="checkbox"> Animate 使用animate实现3个酷炫动画</li>
-<li style="list-style: none"><input type="checkbox"> Flex布局 全面了解</li>
-<li style="list-style: none"><input type="checkbox"> Bootstrap 源码阅读学习</li>
-<li style="list-style: none"><input type="checkbox" checked> 通读《精通CSS高级Web标准解决方案(第2版)》</li>
-</ul>
-<p>阅读书籍 《CSS SECRETS》</p>
-<h2 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h2><ul>
-<li style="list-style: none"><input type="checkbox"> 系统了解ES6语法</li>
-<li style="list-style: none"><input type="checkbox"> Array 熟练使用array的各种方法</li>
-<li style="list-style: none"><input type="checkbox"> 理解ES6新增的几种数据类型</li>
-<li style="list-style: none"><input type="checkbox"> 阅读Vue.js源码</li>
-</ul>
-<p>阅读书籍 《Javascript 高级程序设计》、《Javascript 权威指南》《Javascript 语言精粹》</p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li style="list-style: none"><input type="checkbox"> 可以使用PS切图</li>
-<li style="list-style: none"><input type="checkbox"> 使用nginx在一台服务器上部署多个web程序</li>
-<li style="list-style: none"><input type="checkbox"> 熟练应用nginx的代理、rewrite配置解决跨域限制</li>
-<li style="list-style: none"><input type="checkbox"> 运行维护一个自有在线应用</li>
-<li style="list-style: none"><input type="checkbox"> 部署一个GitLab服务器</li>
-</ul>
-<h2 id="emm"><a href="#emm" class="headerlink" title="emm"></a>emm</h2><ul>
-<li style="list-style: none"><input type="checkbox"> 学会游泳</li>
-<li><del>[x] 种棵友谊的小树苗-胡杨(不种了 2018.04.09)</del></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/note//" class="article-tag-list-link color5">note</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/03/2018年flag/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1290,6 +1373,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">AngularJS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Mac</a>
               </li>
              
@@ -1306,10 +1393,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">AngularJS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
@@ -1318,19 +1401,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

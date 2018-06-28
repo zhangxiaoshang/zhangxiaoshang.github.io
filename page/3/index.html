@@ -146,6 +146,155 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-响应式开发学习笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/01/响应式开发学习笔记/">响应式开发学习笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2017/03/01/响应式开发学习笔记/" class="archive-article-date">
+  	<time datetime="2017-03-01T09:01:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-01 17:01:03</time>
+</a>
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>这是第一次写笔记，以后要常写，不然怎么走向人生巅峰…</em></p>
+<h3 id="先来个总结"><a href="#先来个总结" class="headerlink" title="先来个总结"></a>先来个总结</h3><p>这是学习慕课网上响应式开发实战课程过程中记录笔记的整理。</p>
+<p>所谓响应式开发，基本套路就是，结构样式分离，然后使用CSS的媒体查询，应对不同设备应用不同的样式，以达到较好的显示效果！</p>
+<h4 id="viewport"><a href="#viewport" class="headerlink" title="viewport"></a>viewport</h4><ol>
+<li>布局视口：相当于PS中的画布（个人理解）</li>
+<li>可视视口：缩放操作的就是可视视口。</li>
+<li>理想视口：不需要缩放就能看到很好的效果。比如当布局视口等于可视视口的时候。</li>
+</ol>
+<h4 id="项目文件中特殊文件"><a href="#项目文件中特殊文件" class="headerlink" title="项目文件中特殊文件"></a>项目文件中特殊文件</h4><ol>
+<li><strong>robots.txt</strong> 爬虫协议文件，给机器读的，告诉搜索引擎哪些内容可以被抓取，哪些文件不能被抓取。</li>
+<li><strong>humans.txt</strong> 这个文件由开发者编写，用来记录开发者信息，是给人读的，可以从该文件中了解整个项目的开发团队的构成等信息。</li>
+<li><strong>.editorconfig</strong> 用于团队开发时规范代码风格。</li>
+<li><strong>LICENSE.txt</strong> 记录许可协议。</li>
+<li><strong>README.md</strong> 一般用来描述项目或系统使用说明等信息。</li>
+<li><strong>CHANGELOG.md</strong> 更新日志。</li>
+</ol>
+<h4 id="em-amp-amp-rem相对长度单位"><a href="#em-amp-amp-rem相对长度单位" class="headerlink" title="em &amp;&amp; rem相对长度单位"></a>em &amp;&amp; rem相对长度单位</h4><ol>
+<li><strong>em</strong> 相对参照物是父元素的font-size, 具有继承特性，当没有设置font-size时，浏览器会有一个默认的em设置：1em = 16px.</li>
+<li><p><strong>rem</strong> 相对参照物为根元素<html>，且固定不变，当没有设置font-size时，浏览器会有默认的rem设置 1rem = 16px.</html></p>
+<pre><code>因为rem相对参照物固定不变，易于控制，所以推荐使用rem;
+然后设置&lt;html/&gt;元素的font-size = 62.5% ; 
+这时 1rem = 10px (10 / 16 * 100% = 62.5% );
+</code></pre></li>
+</ol>
+<h4 id="css隐藏字符"><a href="#css隐藏字符" class="headerlink" title="css隐藏字符"></a>css隐藏字符</h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.hide-text</span> &#123;</span><br><span class="line">	<span class="attribute">font</span>: <span class="number">0</span>/<span class="number">0</span> a;			<span class="comment">/* 字体大小/行高 字体名称. 一般并不会存在a字体，此处只为通过css validation */</span></span><br><span class="line">	<span class="attribute">color</span>: transparent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="清除浮动几种方式"><a href="#清除浮动几种方式" class="headerlink" title="清除浮动几种方式"></a>清除浮动几种方式</h4><ol>
+<li>在浮动元素结束后增加空div标签&lt; div style=”clear: both” /&gt;</li>
+<li>给浮动元素容器增加overflow: auto 或 overflow: hidden.</li>
+<li>让浮动元素的容器也浮动.</li>
+</ol>
+<p>比较好的方法是通过增加伪元素来清除浮动：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">	<span class="attribute">display</span>: block;</span><br><span class="line">	<span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">	<span class="attribute">visibility</span>: hidden;		<span class="comment">/* 占用空间的不可见 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>优雅的方法：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">	<span class="attribute">display</span>: table;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">	<span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="一些css属性"><a href="#一些css属性" class="headerlink" title="一些css属性"></a>一些css属性</h4><ol>
+<li>text-overflow: ellipsis 超出文字用…修剪 </li>
+<li>white-space: nowrap 段落中的文本不进行换行</li>
+<li>font-size: 0 可以用来取出间隙，避免无故换行（比如：ul&gt;li做的导航栏，因为代码中存在换行，换行符会被当做字体处理）</li>
+</ol>
+<h4 id="使用媒体查询时，长度单位的选择"><a href="#使用媒体查询时，长度单位的选择" class="headerlink" title="使用媒体查询时，长度单位的选择"></a>使用媒体查询时，长度单位的选择</h4><p>使用媒体查询的时，因为媒体查询的优先级比较高，所以，无论使用的是rem还是em，此时相对参照的不是<html>的设置，而是浏览器的默认设置，即 1rem = 16px；rem兼容性不是很好，所以这里更适合用em。</html></p>
+<h4 id="实现响应式图片的几种方式"><a href="#实现响应式图片的几种方式" class="headerlink" title="实现响应式图片的几种方式"></a>实现响应式图片的几种方式</h4><ol>
+<li>js或服务端（cookies）</li>
+<li>srcset</li>
+<li>srcset 配合 sizes</li>
+<li>picture</li>
+<li>svg</li>
+</ol>
+<h4 id="几个好用的工具"><a href="#几个好用的工具" class="headerlink" title="几个好用的工具"></a>几个好用的工具</h4><ol>
+<li>bowser-sync 代码更改后自动刷新界面，且能够多个窗口同步滚动，适合多设备测试时使用。</li>
+<li>http-server 简单易用的本地web服务器搭建工具。</li>
+<li>Grunt 自动化构建工具</li>
+<li>Gulp  自动化构建工具</li>
+<li>webpack 静态资源打包工具</li>
+</ol>
+<h4 id="最后，一个每次用到的时候都记不住的git命令"><a href="#最后，一个每次用到的时候都记不住的git命令" class="headerlink" title="最后，一个每次用到的时候都记不住的git命令"></a>最后，一个每次用到的时候都记不住的git命令</h4><p>将本地仓库与远程仓库关联</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@xx</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>如果远程仓库是空的：git push -u origin master (-u 参数可以将本地分支一并关联到远程仓库)</p>
+</li>
+<li><p>如果远程仓库不为空，比如有个README.md 此时push命令会出错, 解决办法就是先rebase一下 <strong>git pull origin master –rebase</strong> 然后 <strong>git push origin master</strong></p>
+</li>
+</ol>
+<hr>
+<p>噼里啪啦痛痛快快一篇总结。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HTML</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/note//" class="article-tag-list-link color5">note</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/03/01/响应式开发学习笔记/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello hexo again" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -383,6 +532,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">AngularJS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Mac</a>
               </li>
              
@@ -399,10 +552,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">AngularJS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HTML</a>
               </li>
              
@@ -411,19 +560,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
