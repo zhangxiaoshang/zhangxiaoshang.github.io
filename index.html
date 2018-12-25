@@ -146,6 +146,107 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-vue项目如何全局引入scss变量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/25/vue项目如何全局引入scss变量/">vue项目如何全局引入scss变量</a>
+    </h1>
+  
+
+        
+        <a href="/2018/12/25/vue项目如何全局引入scss变量/" class="archive-article-date">
+  	<time datetime="2018-12-25T10:45:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-25 18:45:36</time>
+</a>
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><ul>
+<li>项目使用 vue-cli 3 创建</li>
+<li>使用scss预处理器</li>
+</ul>
+<h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><p>1、 安装插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i style-resources-loader -D</span><br><span class="line"><span class="comment"># or yarn add style-resources-loader -D</span></span><br></pre></td></tr></table></figure>
+<p>2、 修改项目webpack配置</p>
+<p>项目根目录找到 <code>vue.config.js</code> 文件（项目初始化时默认是没有该文件的，如果没找到则在根目录创建一个，和 package.json同级）。<br>如果是新建的 <code>vue。config.js</code>，配置成如下（path.resolve的第二个参数是scss变量的路径，需要根据实际情况修改）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  configureWebpack: &#123;</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">      rules: [</span><br><span class="line">        &#123;</span><br><span class="line">          test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">          use: [</span><br><span class="line">            <span class="string">"sass-loader"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">              loader: <span class="string">"style-resources-loader"</span>,</span><br><span class="line">              options: &#123;</span><br><span class="line">                patterns: [</span><br><span class="line">                  path.resolve(__dirname, <span class="string">"path/to/scss/variables/*.scss"</span>)</span><br><span class="line">                ]</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>如果之前已经有其他配置，则需要把以上配置对应补充到文件中。</p>
+<p>3、 引用变量</p>
+<p>在 <code>main.js</code> 引用变量文件(需要修改为要引用变量文件的实际路径)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"path/to/scss/variables/*.scss"</span>;</span><br></pre></td></tr></table></figure>
+<p>现在就可以在所有组件中直接使用 <code>*.scss</code> 中定义的变量了。</p>
+<p>以上。</p>
+<p><a href="https://github.com/yenshih/style-resources-loader" target="_blank" rel="noopener">参考</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Vue</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/log//" class="article-tag-list-link color4">log</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/12/25/vue项目如何全局引入scss变量/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-如何在Ubuntu-18-04上安装Nginx（译文）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1181,105 +1282,6 @@
 
 
   
-    <article id="post-使用密码代替密钥登录亚马逊免费云主机" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/04/使用密码代替密钥登录亚马逊免费云主机/">使用密码代替密钥登录亚马逊免费云主机</a>
-    </h1>
-  
-
-        
-        <a href="/2018/01/04/使用密码代替密钥登录亚马逊免费云主机/" class="archive-article-date">
-  	<time datetime="2018-01-04T01:59:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-04 09:59:00</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>Ubuntu 16.04.3 LTS</p>
-<p>1 使用密钥登录系统</p>
-<p><code>$ ssh -i ~/.ssh/awskey.pem ubuntu@54.186.40.*</code></p>
-<p>2 设置root用户密码</p>
-<p><code>$ sudo passwd root</code></p>
-<p>3 切换至root身份</p>
-<p><code>$ su root</code></p>
-<p>4 修改ssh登录方式，找到 PasswordAuthentication no，把no改成yes</p>
-<p><code>$ vim /etc/ssh/sshd_config</code></p>
-<p>5 重启sshd</p>
-<p><code>$ sudo service sshd restart</code></p>
-<p>6 设置跟人用户ubuntu账号的登录密码</p>
-<p><code>$ passwd ubuntu</code></p>
-<p>7 完成，至此可以使用<code>ssh ubuntu@54.186.40.*</code>登录主机，但是好像不能使用root身份登录，不过可以使用ubuntu登录系统后切换到root用户</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/log//" class="article-tag-list-link color4">log</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/04/使用密码代替密钥登录亚马逊免费云主机/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1381,11 +1383,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">MySql</a>
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">MySql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1417,11 +1419,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
+                <a href="javascript:void(0)" class="js-tag color5">Node</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Node</a>
+                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
               </li>
              
               <li class="article-tag-list-item">

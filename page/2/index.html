@@ -146,6 +146,105 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-使用密码代替密钥登录亚马逊免费云主机" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/04/使用密码代替密钥登录亚马逊免费云主机/">使用密码代替密钥登录亚马逊免费云主机</a>
+    </h1>
+  
+
+        
+        <a href="/2018/01/04/使用密码代替密钥登录亚马逊免费云主机/" class="archive-article-date">
+  	<time datetime="2018-01-04T01:59:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-04 09:59:00</time>
+</a>
+
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>Ubuntu 16.04.3 LTS</p>
+<p>1 使用密钥登录系统</p>
+<p><code>$ ssh -i ~/.ssh/awskey.pem ubuntu@54.186.40.*</code></p>
+<p>2 设置root用户密码</p>
+<p><code>$ sudo passwd root</code></p>
+<p>3 切换至root身份</p>
+<p><code>$ su root</code></p>
+<p>4 修改ssh登录方式，找到 PasswordAuthentication no，把no改成yes</p>
+<p><code>$ vim /etc/ssh/sshd_config</code></p>
+<p>5 重启sshd</p>
+<p><code>$ sudo service sshd restart</code></p>
+<p>6 设置跟人用户ubuntu账号的登录密码</p>
+<p><code>$ passwd ubuntu</code></p>
+<p>7 完成，至此可以使用<code>ssh ubuntu@54.186.40.*</code>登录主机，但是好像不能使用root身份登录，不过可以使用ubuntu登录系统后切换到root用户</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/log//" class="article-tag-list-link color4">log</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/01/04/使用密码代替密钥登录亚马逊免费云主机/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2018年flag" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1558,95 +1657,6 @@
 
 
   
-    <article id="post-flex弹性盒子模型探索" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/02/flex弹性盒子模型探索/">flex弹性盒子模型探索</a>
-    </h1>
-  
-
-        
-        <a href="/2017/03/02/flex弹性盒子模型探索/" class="archive-article-date">
-  	<time datetime="2017-03-02T05:14:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-02 13:14:32</time>
-</a>
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <iframe width="100%" height="600px" src="https://run.plnkr.co/plunks/LBIDORZRu42PbiN1E5tV/"></iframe>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HTML</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CSS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/note//" class="article-tag-list-link color5">note</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/02/flex弹性盒子模型探索/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1748,11 +1758,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">MySql</a>
+                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">MySql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1784,11 +1794,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
+                <a href="javascript:void(0)" class="js-tag color5">Node</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Node</a>
+                <a href="javascript:void(0)" class="js-tag color1">Nginx</a>
               </li>
              
               <li class="article-tag-list-item">
