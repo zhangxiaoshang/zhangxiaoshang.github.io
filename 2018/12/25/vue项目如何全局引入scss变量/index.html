@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="张小上的博客">
 <meta property="og:description" content="系统环境 项目使用 vue-cli 3 创建 使用scss预处理器  开始1、 安装插件 12npm i style-resources-loader -D# or yarn add style-resources-loader -D 2、 修改项目webpack配置 项目根目录找到 vue.config.js 文件（项目初始化时默认是没有该文件的，如果没找到则在根目录创建一个，和 package">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-25T11:05:49.582Z">
+<meta property="og:updated_time" content="2018-12-25T13:58:40.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="vue项目如何全局引入scss变量">
 <meta name="twitter:description" content="系统环境 项目使用 vue-cli 3 创建 使用scss预处理器  开始1、 安装插件 12npm i style-resources-loader -D# or yarn add style-resources-loader -D 2、 修改项目webpack配置 项目根目录找到 vue.config.js 文件（项目初始化时默认是没有该文件的，如果没找到则在根目录创建一个，和 package">
@@ -180,10 +180,7 @@
 <p>项目根目录找到 <code>vue.config.js</code> 文件（项目初始化时默认是没有该文件的，如果没找到则在根目录创建一个，和 package.json同级）。<br>如果是新建的 <code>vue。config.js</code>，配置成如下（path.resolve的第二个参数是scss变量的路径，需要根据实际情况修改）：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  configureWebpack: &#123;</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">      rules: [</span><br><span class="line">        &#123;</span><br><span class="line">          test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">          use: [</span><br><span class="line">            <span class="string">"sass-loader"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">              loader: <span class="string">"style-resources-loader"</span>,</span><br><span class="line">              options: &#123;</span><br><span class="line">                patterns: [</span><br><span class="line">                  path.resolve(__dirname, <span class="string">"path/to/scss/variables/*.scss"</span>)</span><br><span class="line">                ]</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>如果之前已经有其他配置，则需要把以上配置对应补充到文件中。</p>
-<p>3、 引用变量</p>
-<p>在 <code>main.js</code> 引用变量文件(需要修改为要引用变量文件的实际路径)</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"path/to/scss/variables/*.scss"</span>;</span><br></pre></td></tr></table></figure>
-<p>现在就可以在所有组件中直接使用 <code>*.scss</code> 中定义的变量了。</p>
+<p>该配置会自动把scss变量注入到各个组件中，所以不需要任何手动引入就可以在所以组件中使用定义好的变量了。</p>
 <p>以上。</p>
 <p><a href="https://github.com/yenshih/style-resources-loader" target="_blank" rel="noopener">参考</a></p>
 
